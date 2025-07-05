@@ -1,7 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Banner from "@/components/layout/Banner";
 import Trend from "@/components/main/Trend";
-import Link from "next/link";
 import WhatsNew from "@/components/main/WhatsNew";
 import RecentArticles from "@/components/main/RecentArticles";
 import Footer from "@/components/layout/Footer";
