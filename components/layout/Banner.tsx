@@ -19,6 +19,8 @@ const Banner = () => {
               alt="Certificate"
               className="w-full h-auto object-cover"
               priority
+              width={800}
+              height={500}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[rgba(2,26,71,0)] to-[rgba(2,26,71,0.6)]" />
             <h1 className="absolute z-20 bottom-10 left-7 text-white text-3xl font-bold">
