@@ -7,15 +7,38 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 const slides = [
-  { id: 1, src: '/img_10.jpg', alt: 'Slide 1' },
-  { id: 2, src: '/img_11.webp', alt: 'Slide 2' },
-  { id: 3, src: '/img_12.jpg', alt: 'Slide 3' },
-  { id: 4, src: '/img_4.jpg', alt: 'Slide 4' },
-  { id: 5, src: '/img_5.jpg', alt: 'Slide 5' },
-  { id: 6, src: '/img_1.jpg', alt: 'Slide 6' },
-  { id: 7, src: '/img_2.jpg', alt: 'Slide 7' },
-  { id: 8, src: '/img_3.jpg', alt: 'Slide 8' },
-  { id: 9, src: '/img_6.jpg', alt: 'Slide 9' }
+  {
+    image: '/img_10.jpg',
+    text: 'A brighter reason to visit us today!'
+  },
+  {
+    image: '/hiring.jpg',
+    text: 'We are hiring....!! .come join us on this journey'
+  },
+  {
+    image: '/img_12.jpg',
+    text: 'Something beautiful has just arrived.'
+  },
+  {
+    image: '/img_2.jpg',
+    text: 'A brighter reason to visit us today!'
+  },
+   {
+    image: '/img_1.jpg',
+    text: 'A brighter reason to visit us today! New treasures are waiting for you. Don’t miss this!'
+  },
+  {
+    image: '/img_2.jpg',
+    text: 'New treasures are waiting for you.'
+  },
+  {
+    image: '/img_3.jpg',
+    text: 'Shine alert: You don’t want to miss this!'
+  },
+  {
+    image: '/img_4.jpg',
+    text: 'New diamond collection just arrived – come shine!'
+  }
 ];
 
 const ITEMS_PER_PAGE = 3;
@@ -35,7 +58,7 @@ const RecentArticles = () => {
     <div className="relative max-w-7xl mx-auto px-4">
       <h1 className="text-2xl font-bold mb-10">Recent Articles</h1>
 
-      {/* Top-right pagination dots (match pages not slides) */}
+      {/* Top-right pagination dots */}
       <div className="absolute top-4 right-4 z-10 flex gap-2">
         {Array.from({ length: totalPages }).map((_, idx) => (
           <button
@@ -56,7 +79,7 @@ const RecentArticles = () => {
         }
         modules={[Autoplay]}
         autoplay={{ delay: 3500, disableOnInteraction: false }}
-        spaceBetween={20}
+        spaceBetween={30}
         loop
         breakpoints={{
           0: { slidesPerView: 1 },
@@ -64,23 +87,27 @@ const RecentArticles = () => {
           1024: { slidesPerView: 3 }
         }}
       >
-        {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              width={400}
-              height={300}
-              className="w-full h-[300px] object-cover rounded-md"
-            />
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative group rounded-md shadow-md">
+              <Image
+                src={slide.image}
+                alt={`slide-${index}`}
+                width={400}
+                height={300}
+                className="w-full h-[350px] object-cover rounded-md"
+              />
+              <div className="absolute bottom-0 bg-white px-4 py-7 rounded-md shadow-md transition-transform duration-300 group-hover:translate-y-2 max-w-[85%]">
+                <p className="text-lg leading-snug font-semibold">{slide.text}</p>
+              </div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
       {/* Number Pagination with active top border */}
-      <div className="relative mt-6 flex justify-center items-center text-gray-500 font-light">
+      <div className="relative mt-10 flex justify-center items-center text-gray-500 font-light">
         <div className="absolute top-0 left-0 w-full h-0.5 bg-gray-200" />
-
         <div
           className="absolute top-0 h-0.5 bg-[#00464d] transition-all duration-300"
           style={{
@@ -88,16 +115,12 @@ const RecentArticles = () => {
             left: `calc(50% - ${totalPages * 18}px + ${activeGroup * 36}px)`
           }}
         />
-
         <button
-          onClick={() =>
-            goToPage((activeGroup - 1 + totalPages) % totalPages)
-          }
+          onClick={() => goToPage((activeGroup - 1 + totalPages) % totalPages)}
           className="text-xl text-[#00464d] px-3"
         >
           ←
         </button>
-
         {Array.from({ length: totalPages }).map((_, idx) => (
           <button
             key={idx}
@@ -109,7 +132,6 @@ const RecentArticles = () => {
             {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
           </button>
         ))}
-
         <button
           onClick={() => goToPage((activeGroup + 1) % totalPages)}
           className="text-xl text-[#00464d] px-3"
