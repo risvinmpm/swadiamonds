@@ -55,7 +55,7 @@ const RecentArticles = () => {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4">
+    <div className="relative max-w-7xl mx-auto mt-20 mb-10">
       <h1 className="text-2xl font-bold mb-10">Recent Articles</h1>
 
       {/* Top-right pagination dots */}
