@@ -49,7 +49,7 @@ const Footer = () => {
             deal only in gold jewellery are reluctant to add diamond jewellery
             to their stock due to certain factors.
           </p>
-          <div className="flex gap-4 mt-4 text-lg">
+          <div className="flex mt-10 text-lg">
             <div className="p-2 rounded-md transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 cursor-pointer">
               <FaTwitter className="text-[#222222]" />
             </div>
