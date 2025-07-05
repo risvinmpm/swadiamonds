@@ -7,29 +7,42 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 const slides = [
-  { id: 1, src: '/img_1.jpg', alt: 'Slide 1' },
-  { id: 2, src: '/img_2.jpg', alt: 'Slide 2' },
-  { id: 3, src: '/img_3.jpg', alt: 'Slide 3' },
+  { id: 1, src: '/img_10.jpg', alt: 'Slide 1' },
+  { id: 2, src: '/img_11.webp', alt: 'Slide 2' },
+  { id: 3, src: '/img_12.jpg', alt: 'Slide 3' },
   { id: 4, src: '/img_4.jpg', alt: 'Slide 4' },
-  { id: 5, src: '/img_5.jpg', alt: 'Slide 5' }
+  { id: 5, src: '/img_5.jpg', alt: 'Slide 5' },
+  { id: 6, src: '/img_1.jpg', alt: 'Slide 6' },
+  { id: 7, src: '/img_2.jpg', alt: 'Slide 7' },
+  { id: 8, src: '/img_3.jpg', alt: 'Slide 8' },
+  { id: 9, src: '/img_6.jpg', alt: 'Slide 9' }
 ];
+
+const ITEMS_PER_PAGE = 3;
 
 const RecentArticles = () => {
   const swiperRef = useRef<any>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeGroup, setActiveGroup] = useState(0);
+  const totalPages = Math.ceil(slides.length / ITEMS_PER_PAGE);
+
+  const goToPage = (pageIndex: number) => {
+    const slideIndex = pageIndex * ITEMS_PER_PAGE;
+    swiperRef.current?.slideToLoop(slideIndex);
+    setActiveGroup(pageIndex);
+  };
 
   return (
     <div className="relative max-w-7xl mx-auto px-4">
       <h1 className="text-2xl font-bold mb-10">Recent Articles</h1>
 
-      {/* Top-right dot indicators */}
+      {/* Top-right pagination dots (match pages not slides) */}
       <div className="absolute top-4 right-4 z-10 flex gap-2">
-        {slides.map((_, idx) => (
+        {Array.from({ length: totalPages }).map((_, idx) => (
           <button
             key={idx}
-            onClick={() => swiperRef.current?.slideToLoop(idx)}
+            onClick={() => goToPage(idx)}
             className={`transition-all h-2 rounded-full ${
-              activeIndex === idx ? 'w-6 bg-[#00464d]' : 'w-2 bg-gray-400'
+              activeGroup === idx ? 'w-10 bg-[#00464d]' : 'w-2 bg-gray-400'
             }`}
           />
         ))}
@@ -38,7 +51,9 @@ const RecentArticles = () => {
       {/* Swiper Carousel */}
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+        onSlideChange={(swiper) =>
+          setActiveGroup(Math.floor(swiper.realIndex / ITEMS_PER_PAGE))
+        }
         modules={[Autoplay]}
         autoplay={{ delay: 3500, disableOnInteraction: false }}
         spaceBetween={20}
@@ -64,36 +79,31 @@ const RecentArticles = () => {
 
       {/* Number Pagination with active top border */}
       <div className="relative mt-6 flex justify-center items-center text-gray-500 font-light">
-        {/* Top border line */}
         <div className="absolute top-0 left-0 w-full h-0.5 bg-gray-200" />
 
-        {/* Active underline */}
         <div
           className="absolute top-0 h-0.5 bg-[#00464d] transition-all duration-300"
           style={{
             width: '32px',
-            left: `calc(50% - ${slides.length * 18}px + ${activeIndex * 36}px)`
+            left: `calc(50% - ${totalPages * 18}px + ${activeGroup * 36}px)`
           }}
         />
 
-        {/* Arrows + Pagination */}
         <button
           onClick={() =>
-            swiperRef.current?.slideToLoop(
-              (activeIndex - 1 + slides.length) % slides.length
-            )
+            goToPage((activeGroup - 1 + totalPages) % totalPages)
           }
           className="text-xl text-[#00464d] px-3"
         >
           ←
         </button>
 
-        {slides.map((_, idx) => (
+        {Array.from({ length: totalPages }).map((_, idx) => (
           <button
             key={idx}
-            onClick={() => swiperRef.current?.slideToLoop(idx)}
+            onClick={() => goToPage(idx)}
             className={`px-2 py-3 text-lg transition-colors ${
-              activeIndex === idx ? 'text-[#00464d] font-semibold' : ''
+              activeGroup === idx ? 'text-[#00464d] font-semibold' : ''
             }`}
           >
             {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
@@ -101,9 +111,7 @@ const RecentArticles = () => {
         ))}
 
         <button
-          onClick={() =>
-            swiperRef.current?.slideToLoop((activeIndex + 1) % slides.length)
-          }
+          onClick={() => goToPage((activeGroup + 1) % totalPages)}
           className="text-xl text-[#00464d] px-3"
         >
           →
