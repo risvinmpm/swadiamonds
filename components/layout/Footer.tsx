@@ -40,7 +40,7 @@ const Footer = () => {
         {/* About Section */}
         <div className="flex-1">
           <h2 className="text-3xl font-light mb-10">
-            <Image src={logo} width={80} height={80} alt="" />
+            <Image src={logo} width={80} height={80} alt="SWA Diamonds Logo" />
           </h2>
           <p className="text-base text-[#a8a8a8] leading-relaxed">
             Concept of SWA Diamonds came into being from CAPESTONE Ventures Pvt
@@ -66,7 +66,7 @@ const Footer = () => {
         <div className="flex-[0.7] mt-10 pe-10">
           <h3 className="text-xl font-medium mb-3">Newsletter</h3>
           <p className="text-base mb-4 text-[#a8a8a8] mt-10">
-            Heaven fruitful doesn't over les idays appear creeping
+            Heaven fruitful doesn&#39;t over les idays appear creeping
           </p>
           <form onSubmit={handleSubmit} className="relative pt-10">
             <input
@@ -81,7 +81,7 @@ const Footer = () => {
               type="submit"
               className="absolute right-0 bottom-3 text-white cursor-pointer"
             >
-              <Image src={form_icon} width={30} height={30} alt="" />
+              <Image src={form_icon} width={30} height={30} alt="submit" />
             </button>
           </form>
           {submitting && (
