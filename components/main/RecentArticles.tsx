@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 
 const slides = [
@@ -23,9 +24,9 @@ const slides = [
     image: '/img_2.jpg',
     text: 'A brighter reason to visit us today!'
   },
-   {
+  {
     image: '/img_1.jpg',
-    text: 'A brighter reason to visit us today! New treasures are waiting for you. Don’t miss this!'
+    text: 'A brighter reason to visit us today! New treasures are waiting for you. Don&#39;t miss this!'
   },
   {
     image: '/img_2.jpg',
@@ -33,7 +34,7 @@ const slides = [
   },
   {
     image: '/img_3.jpg',
-    text: 'Shine alert: You don’t want to miss this!'
+    text: 'Shine alert: You don&#39;t want to miss this!'
   },
   {
     image: '/img_4.jpg',
@@ -44,7 +45,7 @@ const slides = [
 const ITEMS_PER_PAGE = 3;
 
 const RecentArticles = () => {
-  const swiperRef = useRef<any>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
   const [activeGroup, setActiveGroup] = useState(0);
   const totalPages = Math.ceil(slides.length / ITEMS_PER_PAGE);
 
