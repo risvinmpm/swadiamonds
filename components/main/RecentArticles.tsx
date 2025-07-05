@@ -42,7 +42,7 @@ const RecentArticles = () => {
             key={idx}
             onClick={() => goToPage(idx)}
             className={`transition-all h-2 rounded-full ${
-              activeGroup === idx ? 'w-6 bg-[#00464d]' : 'w-2 bg-gray-400'
+              activeGroup === idx ? 'w-10 bg-[#00464d]' : 'w-2 bg-gray-400'
             }`}
           />
         ))}
