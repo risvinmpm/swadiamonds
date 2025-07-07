@@ -11,10 +11,6 @@ import icon_yo from "../../../public/assets/icon_yo.png";
 import type { StaticImageData } from "next/image";
 import Trend from "@/components/main/Trend";
 
-interface BlogDetailProps {
-  params: { slug: string };
-}
-
 interface SocialItem {
   icon: StaticImageData;
   label: string;
@@ -27,6 +23,10 @@ const socialItems: SocialItem[] = [
   { icon: icon_ins, label: "Followers", count: "10,300" },
   { icon: icon_yo, label: "Subscribers", count: "3,870" }
 ];
+
+interface BlogDetailProps {
+  params: { slug: string };
+}
 
 export default function BlogDetail({ params }: BlogDetailProps) {
   const post = blogPosts.find((p) => p.slug === params.slug);
@@ -70,7 +70,6 @@ export default function BlogDetail({ params }: BlogDetailProps) {
               {post.content}
             </Markdown>
 
-            {/* Optional second section */}
             {"content2" in post && (
               <Markdown
                 components={{
