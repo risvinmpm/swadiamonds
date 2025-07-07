@@ -9,19 +9,20 @@ import icon_ins from "../../../public/assets/icon_ins.png";
 import icon_yo from "../../../public/assets/icon_yo.png";
 
 import type { StaticImageData } from "next/image";
+import Form from "@/components/main/Form";
 
 // Social media data
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
   { icon: icon_ins, label: "Followers", count: "10,300" },
-  { icon: icon_yo, label: "Subscribers", count: "3,870" },
+  { icon: icon_yo, label: "Subscribers", count: "3,870" }
 ];
 
 // Optional: generateStaticParams for SSG (recommended if statically generating pages)
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
-    slug: post.slug,
+    slug: post.slug
   }));
 }
 
@@ -67,7 +68,7 @@ export default async function BlogDetail(props: {
                     className="text-base leading-relaxed mb-4 text-gray-700"
                     {...props}
                   />
-                ),
+                )
               }}
             >
               {post.content}
@@ -87,7 +88,7 @@ export default async function BlogDetail(props: {
                       className="text-base leading-relaxed mb-4 text-gray-700"
                       {...props}
                     />
-                  ),
+                  )
                 }}
               >
                 {(post as any).content2}
@@ -118,6 +119,24 @@ export default async function BlogDetail(props: {
           </div>
         </aside>
       </main>
+      <div className="mt-10 hidden lg:block">
+        <div className="flex items-center gap-5">
+          <h1 className="text-2xl font-bold">Share:</h1>
+          {socialItems.map((item, index) => (
+            <div key={index} className="flex items-center">
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={24}
+                height={24}
+                className="w-7 h-7 object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Form />
     </section>
   );
 }
