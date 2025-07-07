@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { rightSideItems } from "@/lib/rightSideItems";
 import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
@@ -18,20 +19,21 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" }
 ];
 
-// ✅ Generate static paths for all diamond slugs
+// ✅ Static path generator
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-export default function DiamondDetailPage({
-  params
+// ✅ Main Page Component
+export default async function DiamondDetailPage({
+  params,
 }: {
   params: { slug: string };
 }) {
   const { slug } = params;
   const item = rightSideItems.find((i) => i.slug === slug);
 
-  if (!item) return <p className="text-center text-red-500">Item not found.</p>;
+  if (!item) return notFound();
 
   return (
     <section className="main-padding">
@@ -97,7 +99,7 @@ export default function DiamondDetailPage({
 
         {/* Right Sidebar */}
         <aside className="md:col-span-4">
-          {/* Right Side List */}
+          {/* Explore More */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Explore More</h3>
             <RightSideList />
