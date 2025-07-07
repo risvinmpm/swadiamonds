@@ -1,42 +1,41 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { blogPosts } from "@/lib/blogData";
+import Image from "next/image";
 import Markdown from "react-markdown";
-import Trend from "@/components/main/Trend";
+import { blogPosts } from "@/lib/blogData";
 
 import icon_fb from "../../../public/assets/icon_fb.png";
 import icon_tw from "../../../public/assets/icon_tw.png";
 import icon_ins from "../../../public/assets/icon_ins.png";
 import icon_yo from "../../../public/assets/icon_yo.png";
-
 import type { StaticImageData } from "next/image";
+import Trend from "@/components/main/Trend";
 
-interface SocialItem {
-  icon: StaticImageData;
-  label: string;
-  count: string;
-}
-
-const socialItems: SocialItem[] = [
+const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
   { icon: icon_ins, label: "Followers", count: "10,300" },
-  { icon: icon_yo, label: "Subscribers", count: "3,870" }
+  { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
+// ✅ Server Component
 export default async function BlogDetail({
-  params
+  params,
 }: {
   params: { slug: string };
 }) {
   const post = blogPosts.find((p) => p.slug === params.slug);
+
   if (!post) return notFound();
 
   return (
     <section className="main-padding">
       <Trend />
-
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
         {/* Left Content */}
         <section className="md:col-span-8 space-y-6">
@@ -54,11 +53,17 @@ export default async function BlogDetail({
             <Markdown
               components={{
                 h2: (props) => (
-                  <h2 className="text-2xl font-semibold mt-8 mb-2 text-teal-700" {...props} />
+                  <h2
+                    className="text-2xl font-semibold mt-8 mb-2 text-teal-700"
+                    {...props}
+                  />
                 ),
                 p: (props) => (
-                  <p className="text-base leading-relaxed mb-4 text-gray-700" {...props} />
-                )
+                  <p
+                    className="text-base leading-relaxed mb-4 text-gray-700"
+                    {...props}
+                  />
+                ),
               }}
             >
               {post.content}
@@ -68,11 +73,17 @@ export default async function BlogDetail({
               <Markdown
                 components={{
                   h2: (props) => (
-                    <h2 className="text-2xl font-semibold mt-8 mb-2 text-indigo-700" {...props} />
+                    <h2
+                      className="text-2xl font-semibold mt-8 mb-2 text-indigo-700"
+                      {...props}
+                    />
                   ),
                   p: (props) => (
-                    <p className="text-base leading-relaxed mb-4 text-gray-700" {...props} />
-                  )
+                    <p
+                      className="text-base leading-relaxed mb-4 text-gray-700"
+                      {...props}
+                    />
+                  ),
                 }}
               >
                 {(post as any).content2}
