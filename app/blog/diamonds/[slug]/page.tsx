@@ -1,19 +1,17 @@
 import Image from "next/image";
-import { notFound } from "next/navigation";
 import { rightSideItems } from "@/lib/rightSideItems";
 import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import RightSideList from "@/components/main/RightSideList";
+import type { Metadata, PageProps } from "next";
 import type { StaticImageData } from "next/image";
-import type { Metadata } from "next";
 
 import icon_fb from "../../../../public/assets/icon_fb.png";
 import icon_tw from "../../../../public/assets/icon_tw.png";
 import icon_ins from "../../../../public/assets/icon_ins.png";
 import icon_yo from "../../../../public/assets/icon_yo.png";
 
-// Social media items
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
@@ -21,17 +19,15 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// Generate paths for all slugs
+// Generate static paths
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// Optional: Metadata for SEO
+// Optional metadata for SEO
 export async function generateMetadata({
   params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+}: PageProps<{ slug: string }>): Promise<Metadata> {
   const item = rightSideItems.find((i) => i.slug === params.slug);
   if (!item) return { title: "Not Found" };
   return {
@@ -40,24 +36,31 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Main Page Component - FIXED with async
+// Main page component
 export default async function DiamondDetailPage({
   params,
-}: {
-  params: { slug: string };
-}) {
+}: PageProps<{ slug: string }>) {
   const item = rightSideItems.find((i) => i.slug === params.slug);
 
-  if (!item) return notFound();
+  if (!item) {
+    return (
+      <section className="main-padding">
+        <Trend />
+        <div className="text-center py-20 text-2xl text-red-600 font-semibold">
+          Diamond not found.
+        </div>
+        <Form />
+      </section>
+    );
+  }
 
   return (
     <section className="main-padding">
       <Trend />
 
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
-        {/* Left Side */}
+        {/* Left Content */}
         <section className="md:col-span-8 space-y-6">
-          {/* Image */}
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image
               src={item.image}
@@ -68,7 +71,6 @@ export default async function DiamondDetailPage({
             />
           </div>
 
-          {/* Markdown Content */}
           <article className="prose prose-lg max-w-none text-gray-800">
             <Markdown
               components={{
@@ -114,13 +116,11 @@ export default async function DiamondDetailPage({
 
         {/* Right Sidebar */}
         <aside className="md:col-span-4">
-          {/* Explore More */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Explore More</h3>
             <RightSideList />
           </div>
 
-          {/* Follow Us */}
           <h2 className="text-2xl font-bold mb-6 mt-10">Follow Us</h2>
           <div className="grid grid-cols-2 gap-5">
             {socialItems.map((item, index) => (
