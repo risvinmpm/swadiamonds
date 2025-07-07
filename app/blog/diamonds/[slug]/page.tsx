@@ -6,6 +6,7 @@ import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import RightSideList from "@/components/main/RightSideList";
 import type { StaticImageData } from "next/image";
+import type { Metadata } from "next";
 
 import icon_fb from "../../../../public/assets/icon_fb.png";
 import icon_tw from "../../../../public/assets/icon_tw.png";
@@ -16,22 +17,35 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
   { icon: icon_ins, label: "Followers", count: "10,300" },
-  { icon: icon_yo, label: "Subscribers", count: "3,870" }
+  { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// ✅ Static path generator
+// ✅ Generate static paths for all diamond slugs
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
+// ✅ Optional: Dynamic metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const item = rightSideItems.find((i) => i.slug === params.slug);
+  if (!item) return { title: "Not Found" };
+  return {
+    title: item.title,
+    description: item.alt,
+  };
+}
+
 // ✅ Main Page Component
-export default async function DiamondDetailPage({
+export default function DiamondDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const { slug } = params;
-  const item = rightSideItems.find((i) => i.slug === slug);
+  const item = rightSideItems.find((i) => i.slug === params.slug);
 
   if (!item) return notFound();
 
@@ -42,7 +56,6 @@ export default async function DiamondDetailPage({
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
         {/* Left Content */}
         <section className="md:col-span-8 space-y-6">
-          {/* Image */}
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image
               src={item.image}
@@ -53,7 +66,6 @@ export default async function DiamondDetailPage({
             />
           </div>
 
-          {/* Markdown Content */}
           <article className="prose prose-lg max-w-none text-gray-800">
             <Markdown
               components={{
@@ -68,7 +80,7 @@ export default async function DiamondDetailPage({
                     className="text-base leading-relaxed mb-4 text-gray-700"
                     {...props}
                   />
-                )
+                ),
               }}
             >
               {item.content}
@@ -88,7 +100,7 @@ export default async function DiamondDetailPage({
                       className="text-base leading-relaxed mb-4 text-gray-700"
                       {...props}
                     />
-                  )
+                  ),
                 }}
               >
                 {item.content2}
