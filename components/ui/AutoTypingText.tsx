@@ -1,45 +1,40 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-interface AutoTypingTextProps {
+interface Props {
   words: string[];
   typeSpeed?: number;
   pause?: number;
 }
 
-const AutoTypingText = ({
-  words,
-  typeSpeed = 50,
-  pause = 1500,
-}: AutoTypingTextProps) => {
-  const [text, setText] = useState('');
+const AutoTypingText: React.FC<Props> = ({ words, typeSpeed = 50, pause = 1000 }) => {
+  const [displayedText, setDisplayedText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
 
   useEffect(() => {
     const currentWord = words[wordIndex];
-    let timeout: NodeJS.Timeout;
-
-    if (charIndex <= currentWord.length) {
-      timeout = setTimeout(() => {
-        setText(currentWord.slice(0, charIndex));
+    if (charIndex < currentWord.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText((prev) => prev + currentWord.charAt(charIndex));
         setCharIndex((prev) => prev + 1);
       }, typeSpeed);
+      return () => clearTimeout(timeout);
     } else {
-      timeout = setTimeout(() => {
-        setWordIndex((prev) => (prev + 1) % words.length);
+      const timeout = setTimeout(() => {
+        setDisplayedText("");
         setCharIndex(0);
+        setWordIndex((prev) => (prev + 1) % words.length);
       }, pause);
+      return () => clearTimeout(timeout);
     }
-
-    return () => clearTimeout(timeout);
   }, [charIndex, wordIndex, words, typeSpeed, pause]);
 
   return (
-    <span className="whitespace-nowrap transition-all duration-300 ease-out text-base font-light">
-      <span className="inline-block animate-fade">{text}</span>
-      <span className="ml-1 animate-pulse font-bold">_</span>
+    <span className="whitespace-normal break-words text-base leading-relaxed">
+      {displayedText}
+      <span className="animate-pulse">_</span>
     </span>
   );
 };
