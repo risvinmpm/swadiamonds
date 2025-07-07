@@ -22,7 +22,7 @@ interface WhatsNewItem {
 const items: WhatsNewItem[] = [
   {
     image: collection_2,
-    text: "A brighter reason to visit us today! New treasures are waiting for you. Don&#39;t miss this!"
+    text: "A brighter reason to visit us today! New treasures are waiting for you. Don't miss this!"
   },
   {
     image: img_9,
@@ -30,7 +30,7 @@ const items: WhatsNewItem[] = [
   },
   {
     image: img_6,
-    text: "Shine alert: You don&#39;t want to miss this!"
+    text: "Shine alert: You don't want to miss this!"
   },
   {
     image: img_7,
