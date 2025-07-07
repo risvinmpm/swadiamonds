@@ -48,7 +48,7 @@ const Form: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl space-y-6 py-20 bg-white shadow rounded"
+      className="w-full max-w-2xl space-y-6 py-20"
     >
       {/* Message */}
       <div>
@@ -102,7 +102,7 @@ const Form: React.FC = () => {
       <div>
         <button
           type="submit"
-          className="text-[#00464d] font-semibold py-4 px-14 mt-7 border border-[#00464d] hover:bg-[#00464d] hover:text-white transition"
+          className="text-[#00464d] uppercase font-normal cursor-pointer py-4 px-14 mt-7 border border-[#00464d] hover:bg-[#00464d] hover:text-white transition"
         >
           Send
         </button>

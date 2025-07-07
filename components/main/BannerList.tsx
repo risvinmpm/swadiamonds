@@ -13,7 +13,7 @@ const BannerList = ({ post }: { post: BlogPost }) => {
         alt={post.title}
         className="w-full h-[200px] object-cover rounded-md shadow-md"
       />
-      <Link href={`/blog/${post.slug}`} className="block mt-5">
+      <Link href={`/blog/bloglist/${post.slug}`} className="block mt-5">
         <h2 className="text-lg font-semibold group-hover:text-teal-600 transition-colors duration-300">
           {post.title}
         </h2>

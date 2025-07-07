@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React from "react";
 import certificate from "../../public/Certificate.png";
-import BannerList from "../main/BannerList";
 import RightSideList from "../main/RightSideList";
 import BlogList from "../main/BlogList";
 
