@@ -1,5 +1,3 @@
-'use client';
-
 import React from "react";
 import { blogPosts } from "@/lib/blogData";
 import BannerList from "./BannerList";
