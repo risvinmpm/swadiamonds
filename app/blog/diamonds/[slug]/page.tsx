@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import RightSideList from "@/components/main/RightSideList";
-import type { Metadata, PageProps } from "next";
+import type { Metadata } from "next";
 import type { StaticImageData } from "next/image";
 
 import icon_fb from "../../../../public/assets/icon_fb.png";
@@ -12,6 +12,7 @@ import icon_tw from "../../../../public/assets/icon_tw.png";
 import icon_ins from "../../../../public/assets/icon_ins.png";
 import icon_yo from "../../../../public/assets/icon_yo.png";
 
+// Social media icons
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
@@ -24,10 +25,12 @@ export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// Optional metadata for SEO
+// Metadata for SEO
 export async function generateMetadata({
   params,
-}: PageProps<{ slug: string }>): Promise<Metadata> {
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const item = rightSideItems.find((i) => i.slug === params.slug);
   if (!item) return { title: "Not Found" };
   return {
@@ -36,10 +39,12 @@ export async function generateMetadata({
   };
 }
 
-// Main page component
-export default async function DiamondDetailPage({
+// Page Component
+export default function DiamondDetailPage({
   params,
-}: PageProps<{ slug: string }>) {
+}: {
+  params: { slug: string };
+}) {
   const item = rightSideItems.find((i) => i.slug === params.slug);
 
   if (!item) {
