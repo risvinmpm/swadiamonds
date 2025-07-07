@@ -1,11 +1,10 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { rightSideItems } from "@/lib/rightSideItems";
 import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import RightSideList from "@/components/main/RightSideList";
 import type { Metadata } from "next";
-import type { StaticImageData } from "next/image";
 
 import icon_fb from "../../../../public/assets/icon_fb.png";
 import icon_tw from "../../../../public/assets/icon_tw.png";
@@ -20,12 +19,12 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// Generate static paths
+// ✅ Static params for dynamic routes
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// Metadata for SEO
+// ✅ Metadata for SEO
 export async function generateMetadata({
   params,
 }: {
@@ -39,13 +38,14 @@ export async function generateMetadata({
   };
 }
 
-// Page Component
-export default function DiamondDetailPage({
+// ✅ Main Page Component
+export default async function DiamondDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const item = rightSideItems.find((i) => i.slug === params.slug);
+  const { slug } = params;
+  const item = rightSideItems.find((i) => i.slug === slug);
 
   if (!item) {
     return (
@@ -69,7 +69,7 @@ export default function DiamondDetailPage({
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image
               src={item.image}
-              alt={item.alt}
+              alt={item.alt ?? "Blog image"}
               width={800}
               height={400}
               className="w-full h-[600px] object-cover rounded-md"

@@ -1,5 +1,3 @@
-// app/blog/bloglist/[slug]/page.tsx
-
 import Image from "next/image";
 import { blogPosts } from "@/lib/blogData";
 import Markdown from "react-markdown";
@@ -20,14 +18,14 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// Static generation paths
+// ✅ Static generation paths
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-// Metadata generation
+// ✅ Metadata generation
 export async function generateMetadata({
   params,
 }: {
@@ -39,8 +37,8 @@ export async function generateMetadata({
     : { title: "Not Found" };
 }
 
-// Main page
-export default async function BlogDetailPage({
+// ✅ Main page
+export default async function Page({
   params,
 }: {
   params: { slug: string };
@@ -106,7 +104,12 @@ export default async function BlogDetailPage({
           <h1 className="text-2xl font-bold">Share:</h1>
           {socialItems.map((item, index) => (
             <div key={index} className="flex items-center">
-              <Image src={item.icon} alt={item.label} width={24} height={24} />
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={24}
+                height={24}
+              />
             </div>
           ))}
         </div>

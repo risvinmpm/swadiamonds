@@ -8,7 +8,7 @@ import img_5 from "../public/img_5.jpg";
 
 export interface RightSideItem {
   image: StaticImageData;
-  alt: string;
+  alt?: string;
   slug: string;
   title: string;
   content: string;
