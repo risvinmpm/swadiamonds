@@ -13,6 +13,7 @@ import icon_tw from "../../../../public/assets/icon_tw.png";
 import icon_ins from "../../../../public/assets/icon_ins.png";
 import icon_yo from "../../../../public/assets/icon_yo.png";
 
+// Social media items
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
@@ -20,12 +21,12 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// ✅ Generate static paths for all diamond slugs
+// Generate paths for all slugs
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// ✅ Optional: Dynamic metadata
+// Optional: Metadata for SEO
 export async function generateMetadata({
   params,
 }: {
@@ -39,8 +40,8 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Main Page Component
-export default function DiamondDetailPage({
+// ✅ Main Page Component - FIXED with async
+export default async function DiamondDetailPage({
   params,
 }: {
   params: { slug: string };
@@ -54,8 +55,9 @@ export default function DiamondDetailPage({
       <Trend />
 
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
-        {/* Left Content */}
+        {/* Left Side */}
         <section className="md:col-span-8 space-y-6">
+          {/* Image */}
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image
               src={item.image}
@@ -66,6 +68,7 @@ export default function DiamondDetailPage({
             />
           </div>
 
+          {/* Markdown Content */}
           <article className="prose prose-lg max-w-none text-gray-800">
             <Markdown
               components={{
