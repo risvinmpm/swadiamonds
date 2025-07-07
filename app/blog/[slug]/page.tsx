@@ -1,15 +1,16 @@
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import { blogPosts } from "@/lib/blogData";
+import Trend from "@/components/main/Trend";
 
 import icon_fb from "../../../public/assets/icon_fb.png";
 import icon_tw from "../../../public/assets/icon_tw.png";
 import icon_ins from "../../../public/assets/icon_ins.png";
 import icon_yo from "../../../public/assets/icon_yo.png";
-import type { StaticImageData } from "next/image";
-import Trend from "@/components/main/Trend";
 
+import type { StaticImageData } from "next/image";
+
+// Social media data
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
@@ -17,21 +18,22 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
+// Optional: generateStaticParams for SSG (recommended if statically generating pages)
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-// ✅ Server Component
-export default async function BlogDetail({
-  params,
-}: {
-  params: { slug: string };
+// Blog detail page component
+export default async function BlogDetail(props: {
+  params: Promise<{ slug: string }>;
 }) {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+  const { slug } = await props.params;
+  const post = blogPosts.find((p) => p.slug === slug);
 
-  if (!post) return notFound();
+  // If post not found, manually return null or custom fallback
+  if (!post) return <p className="text-center text-red-500">Post not found.</p>;
 
   return (
     <section className="main-padding">
@@ -39,6 +41,7 @@ export default async function BlogDetail({
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
         {/* Left Content */}
         <section className="md:col-span-8 space-y-6">
+          {/* Image */}
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image
               src={post.image}
@@ -49,6 +52,7 @@ export default async function BlogDetail({
             />
           </div>
 
+          {/* Markdown Content */}
           <article className="prose prose-lg max-w-none text-gray-800">
             <Markdown
               components={{
