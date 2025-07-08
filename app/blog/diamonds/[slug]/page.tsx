@@ -19,12 +19,12 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// ✅ Generate static paths for dynamic routing
+// Generate static paths for dynamic routing
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// ✅ Generate metadata for SEO
+// Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: {
@@ -43,7 +43,7 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Main detail page component
+// Main detail page component
 export default function DiamondDetailPage({
   params,
 }: {

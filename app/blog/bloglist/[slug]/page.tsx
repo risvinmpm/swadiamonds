@@ -1,4 +1,5 @@
 import { blogPosts } from "@/lib/blogData";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
@@ -22,8 +23,34 @@ export async function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
-export default function Page({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const post = blogPosts.find((p) => p.slug === params.slug);
+
+  if (!post) {
+    return {
+      title: "Not Found",
+      description: "This blog post could not be found.",
+    };
+  }
+
+  return {
+    title: post.title,
+    description: post.alt,
+  };
+}
+
+interface PageProps {
+  params: { slug: string };
+}
+
+// DO NOT MAKE THIS ASYNC unless you fetch something
+export default function Page({ params }: PageProps) {
+  const post = blogPosts.find((p) => p.slug === params.slug);
+
   if (!post) return notFound();
 
   return (
@@ -43,32 +70,54 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
 
           <article className="prose prose-lg max-w-none text-gray-800">
-            <Markdown>{post.content}</Markdown>
-            {post.content2 && <Markdown>{post.content2}</Markdown>}
+            <Markdown
+              components={{
+                h2: ({ node, ...props }) => (
+                  <h2 className="text-2xl font-semibold mt-8 mb-2 text-teal-700" {...props} />
+                ),
+                p: ({ node, ...props }) => (
+                  <p className="text-base leading-relaxed mb-4 text-gray-700" {...props} />
+                ),
+              }}
+            >
+              {post.content}
+            </Markdown>
+
+            {post.content2 && (
+              <Markdown
+                components={{
+                  h2: ({ node, ...props }) => (
+                    <h2 className="text-2xl font-semibold mt-8 mb-2 text-indigo-700" {...props} />
+                  ),
+                  p: ({ node, ...props }) => (
+                    <p className="text-base leading-relaxed mb-4 text-gray-700" {...props} />
+                  ),
+                }}
+              >
+                {post.content2}
+              </Markdown>
+            )}
           </article>
         </section>
 
         <aside className="md:col-span-4">
-          <h3 className="text-xl font-semibold mb-4">Explore More</h3>
-          <div className="grid grid-cols-1 gap-4">
-            {blogPosts
-              .filter((b) => b.slug !== post.slug)
-              .slice(0, 5)
-              .map((b) => (
-                <BannerList key={b.slug} post={b} />
-              ))}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Explore More</h3>
+            <div className="grid grid-cols-1 gap-4">
+              {blogPosts
+                .filter((b) => b.slug !== post.slug)
+                .slice(0, 5)
+                .map((b) => (
+                  <BannerList key={b.slug} post={b} />
+                ))}
+            </div>
           </div>
 
           <h2 className="text-2xl font-bold mb-6 mt-10">Follow Us</h2>
           <div className="grid grid-cols-2 gap-5">
             {socialItems.map((item, index) => (
               <div key={index} className="flex mt-5 gap-4">
-                <Image
-                  src={item.icon}
-                  alt={item.label}
-                  width={32}
-                  height={32}
-                />
+                <Image src={item.icon} alt={item.label} width={32} height={32} />
                 <div>
                   <p className="text-sm font-semibold">{item.count}</p>
                   <p className="text-sm text-gray-600">{item.label}</p>
