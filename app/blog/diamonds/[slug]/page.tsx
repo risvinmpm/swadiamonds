@@ -19,18 +19,19 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// ✅ Static params for dynamic routes
+// Static params for dynamic routes
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// ✅ Metadata for SEO
+// Metadata for SEO
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const item = rightSideItems.find((i) => i.slug === params.slug);
+  const { slug } = await params;
+  const item = rightSideItems.find((i) => i.slug === slug);
   if (!item) return { title: "Not Found" };
   return {
     title: item.title,
@@ -38,8 +39,8 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Main Page Component
-export default async function DiamondDetailPage({
+// Main Page Component
+export default function DiamondDetailPage({
   params,
 }: {
   params: { slug: string };
