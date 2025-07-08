@@ -11,7 +11,7 @@ import icon_tw from "../../../../public/assets/icon_tw.png";
 import icon_ins from "../../../../public/assets/icon_ins.png";
 import icon_yo from "../../../../public/assets/icon_yo.png";
 
-// Social media icons
+// Social media data
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
@@ -19,27 +19,31 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// Static params for dynamic routes
+// ✅ Generate static paths for dynamic routing
 export async function generateStaticParams() {
   return rightSideItems.map((item) => ({ slug: item.slug }));
 }
 
-// Metadata for SEO
+// ✅ Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
   const item = rightSideItems.find((i) => i.slug === slug);
-  if (!item) return { title: "Not Found" };
+
+  if (!item) {
+    return { title: "Not Found" };
+  }
+
   return {
     title: item.title,
     description: item.alt,
   };
 }
 
-// Main Page Component
+// ✅ Main detail page component
 export default function DiamondDetailPage({
   params,
 }: {
@@ -65,7 +69,7 @@ export default function DiamondDetailPage({
       <Trend />
 
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
-        {/* Left Content */}
+        {/* Left Side */}
         <section className="md:col-span-8 space-y-6">
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image

@@ -4,6 +4,7 @@ import collection_2 from "../public/collection_2.avif";
 import collection_3 from "../public/collection_3.jpg";
 
 export interface BlogPost {
+  alt: string;
   slug: string;
   title: string;
   excerpt: string;
