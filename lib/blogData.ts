@@ -15,8 +15,9 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "shine-with-diamonds",
+    slug: "shine with diamonds",
     title: "New diamond collection just arrived – come shine!",
+    alt: "Sparkling new diamond collection",
     excerpt:
       "Explore the sparkling new trends in our diamond collection this season.",
     image: collection_1,
@@ -34,8 +35,9 @@ Caring for your diamond is just as important as choosing the right one. Learn be
 Use mild soap, a soft brush, and store your diamonds separately to avoid scratches.`
   },
   {
-    slug: "how-to-choose-right-diamond",
+    slug: "how to choose right diamond",
     title: "Find the Perfect Diamond for Your Style",
+    alt: "Guide to choosing the right diamond",
     excerpt:
       "From cut to clarity, learn how to select a diamond that fits your style.",
     image: collection_2,
@@ -49,8 +51,9 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores delectus repell
 Round, princess, cushion – each diamond shape tells a different story. Learn what shape suits your personality and the symbolism behind it.`
   },
   {
-    slug: "how-to-choose-right-diamonds",
+    slug: "how to choose right diamonds",
     title: "Everything You Need to Know About Diamonds",
+    alt: "Diamond education article",
     excerpt:
       "From cut to clarity, learn how to select a diamond that fits your style.",
     image: collection_3,

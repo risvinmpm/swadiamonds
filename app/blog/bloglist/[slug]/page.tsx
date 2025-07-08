@@ -1,5 +1,3 @@
-// app/blog/bloglist/[slug]/page.tsx
-
 import { blogPosts } from "@/lib/blogData";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -8,11 +6,10 @@ import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import BannerList from "@/components/main/BannerList";
 
-
-import icon_fb from "../../../../public/assets/icon_fb.png";
-import icon_tw from "../../../../public/assets/icon_tw.png";
-import icon_ins from "../../../../public/assets/icon_ins.png";
-import icon_yo from "../../../../public/assets/icon_yo.png";
+import icon_fb from "@/public/assets/icon_fb.png";
+import icon_tw from "@/public/assets/icon_tw.png";
+import icon_ins from "@/public/assets/icon_ins.png";
+import icon_yo from "@/public/assets/icon_yo.png";
 
 const socialItems = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
@@ -21,12 +18,14 @@ const socialItems = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-// ✅ Generate static paths for dynamic routing
+// ✅ Generate static params
 export async function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
-// ✅ Generate metadata for SEO
+// ✅ Metadata for SEO
 export async function generateMetadata({
   params,
 }: {
@@ -34,18 +33,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = blogPosts.find((p) => p.slug === params.slug);
 
-  if (!post) {
-    return { title: "Not Found" };
-  }
-
   return {
-    title: post.title,
-    description: post.alt,
+    title: post?.title ?? "Not Found",
+    description: post?.alt ?? "This blog post could not be found.",
   };
 }
 
-// ✅ Main blog detail component
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
+// ✅ Page component — DO NOT mark as async
+export default function Page({ params }: { params: { slug: string } }) {
   const post = blogPosts.find((p) => p.slug === params.slug);
 
   if (!post) {
@@ -70,7 +65,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           <div className="overflow-hidden rounded-md shadow-lg">
             <Image
               src={post.image}
-              alt={post.title}
+              alt={post.alt}
               width={800}
               height={400}
               className="w-full h-[600px] object-cover rounded-md"
