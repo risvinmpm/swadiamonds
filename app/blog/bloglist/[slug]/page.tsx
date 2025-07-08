@@ -7,6 +7,8 @@ import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import BannerList from "@/components/main/BannerList";
+
+
 import icon_fb from "../../../../public/assets/icon_fb.png";
 import icon_tw from "../../../../public/assets/icon_tw.png";
 import icon_ins from "../../../../public/assets/icon_ins.png";
@@ -19,22 +21,30 @@ const socialItems = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
+// ✅ Generate static paths for dynamic routing
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
+// ✅ Generate metadata for SEO
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
   const post = blogPosts.find((p) => p.slug === params.slug);
+
+  if (!post) {
+    return { title: "Not Found" };
+  }
+
   return {
-    title: post?.title ?? "Post Not Found",
-    description: post?.alt ?? "",
+    title: post.title,
+    description: post.alt,
   };
 }
 
+// ✅ Main blog detail component
 export default function BlogDetailPage({ params }: { params: { slug: string } }) {
   const post = blogPosts.find((p) => p.slug === params.slug);
 
