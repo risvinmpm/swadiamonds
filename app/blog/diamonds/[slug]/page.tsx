@@ -4,8 +4,6 @@ import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import RightSideList from "@/components/main/RightSideList";
-import type { Metadata } from "next";
-
 import icon_fb from "../../../../public/assets/icon_fb.png";
 import icon_tw from "../../../../public/assets/icon_tw.png";
 import icon_ins from "../../../../public/assets/icon_ins.png";
@@ -19,37 +17,37 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
+type Params = Promise<{ slug: string }>;
+
 // Generate static paths for dynamic routing
-export async function generateStaticParams() {
-  return rightSideItems.map((item) => ({ slug: item.slug }));
-}
+// export async function generateStaticParams() {
+//   return rightSideItems.map((item) => ({ slug: item.slug }));
+// }
 
 // Generate metadata for SEO
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const { slug } = params;
-  const item = rightSideItems.find((i) => i.slug === slug);
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: { slug: string };
+// }): Promise<Metadata> {
+//   const { slug } = params;
+//   const item = rightSideItems.find((i) => i.slug === slug);
 
-  if (!item) {
-    return { title: "Not Found" };
-  }
+//   if (!item) {
+//     return { title: "Not Found" };
+//   }
 
-  return {
-    title: item.title,
-    description: item.alt,
-  };
-}
+//   return {
+//     title: item.title,
+//     description: item.alt,
+//   };
+// }
 
 // Main detail page component
-export default function DiamondDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const { slug } = params;
+export default async function DiamondDetailPage(
+  { params }: { params: Params }
+) {
+  const { slug } = await params;
   const item = rightSideItems.find((i) => i.slug === slug);
 
   if (!item) {

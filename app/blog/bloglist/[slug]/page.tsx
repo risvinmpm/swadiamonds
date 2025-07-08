@@ -1,11 +1,10 @@
 import { blogPosts } from "@/lib/blogData";
-import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
 import BannerList from "@/components/main/BannerList";
-import { notFound } from "next/navigation";
 
 import icon_fb from "@/public/assets/icon_fb.png";
 import icon_tw from "@/public/assets/icon_tw.png";
@@ -19,37 +18,38 @@ const socialItems = [
   { icon: icon_yo, label: "Subscribers", count: "3,870" },
 ];
 
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
-}
+type Params = Promise<{ slug: string }>;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+// ✅ Static params (used at build time)
+// export async function generateStaticParams() {
+//   return blogPosts.map((post) => ({ slug: post.slug }));
+// }
 
-  if (!post) {
-    return {
-      title: "Not Found",
-      description: "This blog post could not be found.",
-    };
-  }
+// export async function generateMetadata({
+//   params,
+// }: {
+//   params: { slug: string };
+// }): Promise<Metadata> {
+//   const { slug } = params;
+//   const post = blogPosts.find((p) => p.slug === slug);
 
-  return {
-    title: post.title,
-    description: post.alt,
-  };
-}
+//   if (!post) {
+//     return {
+//       title: "Not Found",
+//       description: "This blog post could not be found.",
+//     };
+//   }
 
-interface PageProps {
-  params: { slug: string };
-}
+//   return {
+//     title: post.title,
+//     description: post.alt,
+//   };
+// }
 
-// DO NOT MAKE THIS ASYNC unless you fetch something
-export default function Page({ params }: PageProps) {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+// ✅ Correctly typed and awaited page component
+export default async function Page({ params }: { params: Params })  {
+const { slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
 
   if (!post) return notFound();
 
@@ -117,7 +117,7 @@ export default function Page({ params }: PageProps) {
           <div className="grid grid-cols-2 gap-5">
             {socialItems.map((item, index) => (
               <div key={index} className="flex mt-5 gap-4">
-                <Image src={item.icon} alt={item.label} width={32} height={32} />
+                <Image src={item.icon} alt={item.label} width={32} height={32} className="w-8 h-8 object-contain" />
                 <div>
                   <p className="text-sm font-semibold">{item.count}</p>
                   <p className="text-sm text-gray-600">{item.label}</p>
