@@ -1,7 +1,8 @@
-import Image from 'next/image';
-import React from 'react';
-import logo from '../../public/logo.svg';
-import banner from '../../public/Burjuman_banner_1.jpg';
+import Image from "next/image";
+import React from "react";
+import logo from "../../public/logo.svg";
+import banner from "../../public/Burjuman_banner_1.jpg";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -9,13 +10,15 @@ const Navbar = () => {
       <div className="main-padding flex flex-col md:flex-row justify-center md:justify-between items-center gap-4 py-2">
         {/* Logo */}
         <div className="flex-shrink-0">
-          <Image
-            src={logo}
-            alt="SWA Logo"
-            width={80}
-            height={50}
-            className="w-20 h-auto object-contain"
-          />
+          <Link href="/">
+            <Image
+              src={logo}
+              alt="SWA Logo"
+              width={80}
+              height={50}
+              className="w-20 h-auto object-contain"
+            />
+          </Link>
         </div>
 
         {/* Banner */}
