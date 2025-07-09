@@ -17,7 +17,7 @@ export default function DiamondContent({ image, alt, content, content2 }: Props)
           alt={alt}
           width={800}
           height={400}
-          className="w-full h-[600px] object-cover rounded-md"
+          className="w-full h-[300px] lg:h-[600px] object-cover rounded-md"
         />
       </div>
 
