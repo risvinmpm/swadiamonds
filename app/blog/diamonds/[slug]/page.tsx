@@ -1,15 +1,16 @@
-import Image, { StaticImageData } from "next/image";
 import { rightSideItems } from "@/lib/rightSideItems";
-import Markdown from "react-markdown";
 import Trend from "@/components/main/Trend";
 import Form from "@/components/main/Form";
-import RightSideList from "@/components/main/RightSideList";
-import icon_fb from "../../../../public/assets/icon_fb.png";
-import icon_tw from "../../../../public/assets/icon_tw.png";
-import icon_ins from "../../../../public/assets/icon_ins.png";
-import icon_yo from "../../../../public/assets/icon_yo.png";
+import SocialStats from "@/components/common/SocialStats";
+import SocialShare from "@/components/common/SocialShare";
+import DiamondContent from "@/components/blog/detail/DiamondContent";
+import ExploreMoreList from "@/components/blog/detail/ExploreMoreList";
+import icon_fb from "@/public/assets/icon_fb.png";
+import icon_tw from "@/public/assets/icon_tw.png";
+import icon_ins from "@/public/assets/icon_ins.png";
+import icon_yo from "@/public/assets/icon_yo.png";
+import type { StaticImageData } from "next/image";
 
-// Social media data
 const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
   { icon: icon_fb, label: "Fans", count: "8,045" },
   { icon: icon_tw, label: "Followers", count: "5,210" },
@@ -19,34 +20,7 @@ const socialItems: { icon: StaticImageData; label: string; count: string }[] = [
 
 type Params = Promise<{ slug: string }>;
 
-// Generate static paths for dynamic routing
-// export async function generateStaticParams() {
-//   return rightSideItems.map((item) => ({ slug: item.slug }));
-// }
-
-// Generate metadata for SEO
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { slug: string };
-// }): Promise<Metadata> {
-//   const { slug } = params;
-//   const item = rightSideItems.find((i) => i.slug === slug);
-
-//   if (!item) {
-//     return { title: "Not Found" };
-//   }
-
-//   return {
-//     title: item.title,
-//     description: item.alt,
-//   };
-// }
-
-// Main detail page component
-export default async function DiamondDetailPage(
-  { params }: { params: Params }
-) {
+export default async function DiamondDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
   const item = rightSideItems.find((i) => i.slug === slug);
 
@@ -69,97 +43,25 @@ export default async function DiamondDetailPage(
       <main className="grid grid-cols-1 md:grid-cols-12 gap-7">
         {/* Left Side */}
         <section className="md:col-span-8 space-y-6">
-          <div className="overflow-hidden rounded-md shadow-lg">
-            <Image
-              src={item.image}
-              alt={item.alt ?? "Blog image"}
-              width={800}
-              height={400}
-              className="w-full h-[600px] object-cover rounded-md"
-            />
-          </div>
-
-          <article className="prose prose-lg max-w-none text-gray-800">
-            <Markdown
-              components={{
-                h2: (props) => (
-                  <h2
-                    className="text-2xl font-semibold mt-8 mb-2 text-teal-700"
-                    {...props}
-                  />
-                ),
-                p: (props) => (
-                  <p
-                    className="text-base leading-relaxed mb-4 text-gray-700"
-                    {...props}
-                  />
-                ),
-              }}
-            >
-              {item.content}
-            </Markdown>
-
-            {item.content2 && (
-              <Markdown
-                components={{
-                  h2: (props) => (
-                    <h2
-                      className="text-2xl font-semibold mt-8 mb-2 text-indigo-700"
-                      {...props}
-                    />
-                  ),
-                  p: (props) => (
-                    <p
-                      className="text-base leading-relaxed mb-4 text-gray-700"
-                      {...props}
-                    />
-                  ),
-                }}
-              >
-                {item.content2}
-              </Markdown>
-            )}
-          </article>
+          <DiamondContent
+            image={item.image}
+            alt={item.alt ?? "Diamond image"}
+            content={item.content}
+            content2={item.content2}
+          />
         </section>
 
-        {/* Right Sidebar */}
+        {/* Right Side */}
         <aside className="md:col-span-4">
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Explore More</h3>
-            <RightSideList />
-          </div>
-
+          <ExploreMoreList />
           <h2 className="text-2xl font-bold mb-6 mt-10">Follow Us</h2>
-          <div className="grid grid-cols-2 gap-5">
-            {socialItems.map((item, index) => (
-              <div key={index} className="flex mt-5 gap-4">
-                <Image
-                  src={item.icon}
-                  alt={item.label}
-                  width={32}
-                  height={32}
-                  className="w-8 h-8 object-contain"
-                />
-                <div>
-                  <p className="text-sm font-semibold">{item.count}</p>
-                  <p className="text-sm text-gray-600">{item.label}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <SocialStats items={socialItems} />
         </aside>
       </main>
 
-      {/* Share Section */}
+      {/* Share */}
       <div className="mt-10 hidden lg:block">
-        <div className="flex items-center gap-5">
-          <h1 className="text-2xl font-bold">Share:</h1>
-          {socialItems.map((item, index) => (
-            <div key={index} className="flex items-center">
-              <Image src={item.icon} alt={item.label} width={24} height={24} />
-            </div>
-          ))}
-        </div>
+        <SocialShare items={socialItems} />
       </div>
 
       <Form />
