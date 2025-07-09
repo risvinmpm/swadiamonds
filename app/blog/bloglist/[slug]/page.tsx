@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: Params }) {
               alt={post.alt}
               width={800}
               height={400}
-              className="w-full h-[600px] object-cover rounded-md"
+              className="w-full h-[300px] lg:h-[600px] object-cover rounded-md"
             />
           </div>
 
